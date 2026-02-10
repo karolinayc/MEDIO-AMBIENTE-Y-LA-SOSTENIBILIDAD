@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Plataforma educativa dedicada a la conservacion del medio ambiente, sostenibilidad y conciencia ecologica.">
+  <meta name="keywords" content="medio ambiente, ecologia, sostenibilidad, reciclaje, cambio climatico, biodiversidad, energias renovables">
+  <meta name="theme-color" content="#2d6a4f">
+  <title>EcoVida - Portal del Medio Ambiente</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #2d6a4f;
+      --primary-light: #40916c;
+      --primary-dark: #1b4332;
+      --primary-fg: #ffffff;
+      --accent: #d4a437;
+      --accent-fg: #3a2a06;
+      --bg: #f8faf8;
+      --bg-secondary: #f0f4f0;
+      --card: #ffffff;
+      --foreground: #1a2e1a;
+      --muted: #5f7a5f;
+      --border: #d6e0d6;
+      --destructive: #dc3545;
+      --radius: 0.625rem;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-serif: 'Playfair Display', Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--foreground);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    input, textarea, select { font-family: inherit; }
+    a { text-decoration: none; color: inherit; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .container-sm { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.625rem 1.5rem; border-radius: var(--radius); font-size: 0.875rem;
+      font-weight: 600; transition: all 0.2s; line-height: 1.4;
+    }
+    .btn-primary { background: var(--primary); color: var(--primary-fg); }
+    .btn-primary:hover { background: var(--primary-light); }
+    .btn-outline { background: transparent; color: var(--primary-fg); border: 1px solid rgba(255,255,255,0.3); }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); }
+    .btn-outline-dark { background: transparent; color: var(--foreground); border: 1px solid var(--border); }
+    .btn-outline-dark:hover { background: var(--bg-secondary); }
+    .btn-lg { padding: 0.875rem 2rem; font-size: 1rem; }
+    .btn-sm { padding: 0.5rem 1rem; font-size: 0.8125rem; }
+    .btn-icon { padding: 0.625rem; }
+    .btn-full { width: 100%; }
+
+    /* ===== INPUT ===== */
+    .input, .textarea, .select-field {
+      width: 100%; padding: 0.625rem 0.75rem; border: 1px solid var(--border);
+      border-radius: var(--radius); font-size: 0.875rem; background: var(--bg-secondary);
+      color: var(--foreground); transition: border-color 0.2s; outline: none;
+    }
+    .input:focus, .textarea:focus, .select-field:focus { border-color: var(--primary); }
+    .input-error { border-color: var(--destructive); }
+    .textarea { resize: vertical; min-height: 100px; }
+    .error-text { font-size: 0.75rem; color: var(--destructive); margin-top: 0.25rem; }
+
+    /* ===== SVG ICONS (inline) ===== */
+    .icon { width: 1.25rem; height: 1.25rem; flex-shrink: 0; }
+    .icon-sm { width: 1rem; height: 1rem; }
+    .icon-lg { width: 1.75rem; height: 1.75rem; }
+    .icon-xl { width: 4rem; height: 4rem; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      background: rgba(248,250,248,0.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); height: 4rem;
+    }
+    .navbar-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 1rem;
+      display: flex; align-items: center; justify-content: space-between; height: 100%;
+    }
+    .navbar-brand {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700;
+      color: var(--foreground); transition: all 0.2s;
+    }
+    .navbar-brand:hover .navbar-brand-icon { transform: rotate(12deg); }
+    .navbar-brand-icon { color: var(--primary); transition: transform 0.3s; }
+    .nav-links { display: none; align-items: center; gap: 0.25rem; }
+    .nav-link {
+      padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 500;
+      color: var(--muted); border-radius: var(--radius); transition: all 0.2s;
+    }
+    .nav-link:hover { color: var(--primary); background: var(--bg-secondary); }
+    .nav-actions { display: none; align-items: center; gap: 0.75rem; }
+    .nav-mobile-btns { display: flex; align-items: center; gap: 0.5rem; }
+    .nav-icon-btn { padding: 0.5rem; color: var(--muted); transition: color 0.2s; }
+    .nav-icon-btn:hover { color: var(--primary); }
+
+    /* Search Dropdown */
+    .search-dropdown {
+      position: absolute; right: 0; top: 3.5rem; width: 20rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 0.75rem;
+      display: none;
+    }
+    .search-dropdown.active { display: block; }
+    .search-input-wrap { position: relative; }
+    .search-input-wrap .icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    .search-input-wrap .input { padding-left: 2.25rem; }
+    .search-results { margin-top: 0.5rem; max-height: 12rem; overflow-y: auto; }
+    .search-result-item {
+      padding: 0.5rem 0.75rem; font-size: 0.875rem; color: var(--foreground);
+      border-radius: var(--radius); transition: background 0.2s; cursor: pointer; text-align: left; width: 100%;
+    }
+    .search-result-item:hover { background: var(--bg-secondary); }
+    .search-no-results { padding: 0.5rem 0.75rem; font-size: 0.875rem; color: var(--muted); }
+
+    /* Mobile menu */
+    .mobile-search { display: none; padding: 0 1rem 0.75rem; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .mobile-search.active { display: block; }
+    .mobile-menu { display: none; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .mobile-menu.active { display: block; }
+    .mobile-menu-inner { padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+    .mobile-nav-link {
+      text-align: left; padding: 0.75rem; font-size: 0.875rem; font-weight: 500;
+      color: var(--foreground); border-radius: var(--radius); transition: all 0.2s; width: 100%;
+    }
+    .mobile-nav-link:hover { color: var(--primary); background: var(--bg-secondary); }
+
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+      .nav-actions { display: flex; }
+      .nav-mobile-btns { display: none; }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative; min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; background-size: cover; background-position: center;
+      background-image: url('https://images.unsplash.com/photo-1511497584788-876760111969?w=1920&q=80');
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(26,46,26,0.7), rgba(26,46,26,0.5), rgba(26,46,26,0.8));
+    }
+    .hero-content {
+      position: relative; z-index: 10; max-width: 56rem; margin: 0 auto;
+      padding: 0 1rem; text-align: center;
+    }
+    .hero-tag {
+      margin-bottom: 1rem; font-size: 0.875rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.3em; color: rgba(255,255,255,0.7);
+    }
+    .hero-title {
+      font-family: var(--font-serif); font-size: clamp(2.25rem, 5vw, 4.5rem);
+      font-weight: 700; line-height: 1.1; color: #fff; text-wrap: balance;
+    }
+    .hero-desc {
+      margin: 1.5rem auto 0; max-width: 42rem; font-size: clamp(1rem, 2vw, 1.25rem);
+      line-height: 1.6; color: rgba(255,255,255,0.8);
+    }
+    .hero-buttons { margin-top: 2.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .hero-scroll {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.6); transition: color 0.2s; animation: bounce 2s infinite;
+    }
+    .hero-scroll:hover { color: #fff; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-8px); }
+    }
+
+    @media (min-width: 640px) {
+      .hero-buttons { flex-direction: row; justify-content: center; }
+    }
+
+    /* ===== SECTIONS COMMON ===== */
+    .section { padding: 6rem 0; }
+    .section-alt { background: var(--bg-secondary); }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-tag {
+      font-size: 0.875rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.2em; color: var(--primary); margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--font-serif); font-size: clamp(1.875rem, 3vw, 3rem);
+      font-weight: 700; color: var(--foreground); text-wrap: balance;
+    }
+    .section-desc {
+      margin: 1rem auto 0; max-width: 42rem; color: var(--muted); line-height: 1.6;
+    }
+
+    /* ===== MISSION ===== */
+    .mission-grid { display: grid; gap: 2rem; }
+    .mission-card {
+      position: relative; border-radius: var(--radius); border: 1px solid var(--border);
+      background: var(--card); padding: 2rem; transition: all 0.3s;
+    }
+    .mission-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: rgba(45,106,79,0.3); }
+    .mission-icon {
+      margin-bottom: 1.5rem; width: 3.5rem; height: 3.5rem; display: flex; align-items: center;
+      justify-content: center; border-radius: 0.5rem; background: rgba(45,106,79,0.1); color: var(--primary);
+      transition: all 0.3s;
+    }
+    .mission-card:hover .mission-icon { background: var(--primary); color: var(--primary-fg); }
+    .mission-card h3 {
+      font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700;
+      color: var(--foreground); margin-bottom: 0.75rem;
+    }
+    .mission-card p { font-size: 0.875rem; line-height: 1.6; color: var(--muted); }
+
+    @media (min-width: 768px) { .mission-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    /* ===== THEMATIC SECTIONS ===== */
+    .tabs-wrap { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 3rem; }
+    .tab-btn {
+      display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 1rem;
+      border-radius: var(--radius); font-size: 0.875rem; font-weight: 500;
+      transition: all 0.2s; border: 1px solid var(--border); background: var(--card); color: var(--muted);
+    }
+    .tab-btn:hover { color: var(--foreground); background: var(--bg); }
+    .tab-btn.active {
+      background: var(--primary); color: var(--primary-fg); border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(45,106,79,0.3);
+    }
+    .thematic-grid { display: grid; gap: 2rem; align-items: start; }
+    .thematic-image {
+      position: relative; aspect-ratio: 4/3; overflow: hidden; border-radius: var(--radius);
+    }
+    .thematic-image img { width: 100%; height: 100%; object-fit: cover; transition: all 0.5s; }
+    .thematic-image-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(26,46,26,0.5), transparent);
+    }
+    .thematic-image-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; }
+    .thematic-image-text small {
+      font-size: 0.75rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.15em; color: rgba(255,255,255,0.8);
+    }
+    .thematic-image-text h3 {
+      font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700;
+      color: #fff; margin-top: 0.25rem;
+    }
+    .thematic-content { display: flex; flex-direction: column; gap: 1.5rem; }
+    .thematic-content > p { color: var(--foreground); line-height: 1.6; }
+    .facts-box, .tips-box {
+      border-radius: var(--radius); padding: 1.5rem;
+    }
+    .facts-box { background: var(--card); border: 1px solid var(--border); }
+    .tips-box { background: rgba(45,106,79,0.05); border: 1px solid rgba(45,106,79,0.2); }
+    .facts-box h4, .tips-box h4 {
+      font-family: var(--font-serif); font-size: 1.125rem; font-weight: 700;
+      color: var(--foreground); margin-bottom: 1rem;
+    }
+    .fact-list, .tip-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .fact-item { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.875rem; color: var(--muted); }
+    .fact-num {
+      flex-shrink: 0; width: 1.5rem; height: 1.5rem; display: flex; align-items: center;
+      justify-content: center; border-radius: 50%; background: var(--accent);
+      color: var(--accent-fg); font-size: 0.75rem; font-weight: 700;
+    }
+    .tip-item { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.875rem; color: var(--foreground); }
+    .tip-item .icon { color: var(--primary); margin-top: 2px; }
+
+    @media (min-width: 1024px) { .thematic-grid { grid-template-columns: 1fr 1fr; } }
+
+    /* ===== GALLERY ===== */
+    .gallery-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
+    .gallery-item {
+      position: relative; aspect-ratio: 4/3; overflow: hidden; border-radius: var(--radius);
+      cursor: pointer; text-align: left;
+    }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .gallery-item:hover img { transform: scale(1.1); }
+    .gallery-hover {
+      position: absolute; inset: 0; background: rgba(26,46,26,0); transition: background 0.3s;
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem;
+      opacity: 0; transition: all 0.3s;
+    }
+    .gallery-item:hover .gallery-hover { background: rgba(26,46,26,0.5); opacity: 1; }
+    .gallery-hover-meta { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem; }
+    .gallery-hover-meta .icon { color: #fff; width: 1rem; height: 1rem; }
+    .gallery-hover-meta span { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.8); }
+    .gallery-hover h4 { font-size: 0.875rem; font-weight: 700; color: #fff; }
+    .gallery-play {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 3rem; height: 3rem; border-radius: 50%; background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s;
+    }
+    .gallery-item:hover .gallery-play { background: var(--primary); }
+    .gallery-play .icon { color: #fff; }
+
+    .gallery-empty { text-align: center; padding: 4rem 0; color: var(--muted); }
+
+    @media (min-width: 640px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1280px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 100; display: none; align-items: center;
+      justify-content: center; background: rgba(26,46,26,0.92); backdrop-filter: blur(8px);
+    }
+    .lightbox.active { display: flex; }
+    .lightbox-close, .lightbox-prev, .lightbox-next {
+      position: absolute; padding: 0.5rem; color: rgba(255,255,255,0.7); transition: color 0.2s;
+    }
+    .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover { color: #fff; }
+    .lightbox-close { top: 1rem; right: 1rem; }
+    .lightbox-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+    .lightbox-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+    .lightbox-content { width: 100%; max-width: 56rem; padding: 0 4rem; }
+    .lightbox-media { position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius); }
+    .lightbox-media img { width: 100%; height: 100%; object-fit: cover; }
+    .lightbox-media iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .lightbox-info { margin-top: 1rem; text-align: center; }
+    .lightbox-info h4 { font-size: 1.125rem; font-weight: 700; color: #fff; }
+    .lightbox-info p { font-size: 0.875rem; color: rgba(255,255,255,0.7); margin-top: 0.25rem; }
+
+    /* ===== FORUM ===== */
+    .forum-posts { display: flex; flex-direction: column; gap: 1.5rem; }
+    .forum-card {
+      border-radius: var(--radius); background: var(--card); border: 1px solid var(--border);
+      overflow: hidden; transition: box-shadow 0.3s;
+    }
+    .forum-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .forum-card-body { padding: 1.5rem; }
+    .forum-header { display: flex; align-items: flex-start; gap: 1rem; }
+    .forum-avatar {
+      flex-shrink: 0; width: 2.75rem; height: 2.75rem; border-radius: 50%;
+      background: rgba(45,106,79,0.1); display: flex; align-items: center;
+      justify-content: center; font-size: 0.875rem; font-weight: 700; color: var(--primary);
+    }
+    .forum-meta { flex: 1; }
+    .forum-author-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+    .forum-author { font-size: 0.875rem; font-weight: 600; color: var(--foreground); }
+    .forum-category-badge {
+      font-size: 0.75rem; padding: 0.125rem 0.5rem; border-radius: 9999px;
+      background: rgba(45,106,79,0.1); color: var(--primary); font-weight: 500;
+    }
+    .forum-time { display: flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; color: var(--muted); margin-top: 0.125rem; }
+    .forum-title {
+      margin-top: 1rem; font-family: var(--font-serif); font-size: 1.125rem;
+      font-weight: 700; color: var(--foreground);
+    }
+    .forum-text { margin-top: 0.5rem; font-size: 0.875rem; line-height: 1.6; color: var(--muted); }
+    .forum-actions { margin-top: 1rem; display: flex; align-items: center; gap: 1rem; }
+    .forum-action-btn {
+      display: flex; align-items: center; gap: 0.375rem; font-size: 0.875rem;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .forum-action-btn:hover { color: var(--primary); }
+
+    /* Comments */
+    .forum-comments {
+      border-top: 1px solid var(--border); background: rgba(240,244,240,0.5); padding: 1.5rem;
+      display: none;
+    }
+    .forum-comments.active { display: block; }
+    .comments-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; }
+    .comment { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .comment-avatar {
+      flex-shrink: 0; width: 2rem; height: 2rem; border-radius: 50%;
+      background: var(--bg-secondary); display: flex; align-items: center;
+      justify-content: center; color: var(--muted);
+    }
+    .comment-body { flex: 1; }
+    .comment-author-row { display: flex; align-items: center; gap: 0.5rem; }
+    .comment-author { font-size: 0.875rem; font-weight: 600; color: var(--foreground); }
+    .comment-time { font-size: 0.75rem; color: var(--muted); }
+    .comment-text { margin-top: 0.25rem; font-size: 0.875rem; color: var(--muted); }
+    .comment-like {
+      margin-top: 0.25rem; display: flex; align-items: center; gap: 0.25rem;
+      font-size: 0.75rem; color: var(--muted); transition: color 0.2s;
+    }
+    .comment-like:hover { color: var(--primary); }
+    .add-comment { display: flex; gap: 0.75rem; }
+    .add-comment .input { flex: 1; }
+
+    /* New Post Form */
+    .new-post-form {
+      margin-bottom: 2rem; border-radius: var(--radius); background: var(--card);
+      border: 1px solid var(--border); padding: 1.5rem; display: none;
+    }
+    .new-post-form.active { display: block; }
+    .new-post-form h3 {
+      font-family: var(--font-serif); font-size: 1.125rem; font-weight: 700;
+      color: var(--foreground); margin-bottom: 1rem;
+    }
+    .form-grid { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row-2 { display: grid; gap: 1rem; }
+    .form-buttons { display: flex; gap: 0.75rem; }
+
+    @media (min-width: 640px) { .form-row-2 { grid-template-columns: 1fr 1fr; } }
+
+    /* ===== CONTACT ===== */
+    .contact-grid { display: grid; gap: 3rem; }
+    .contact-info-card {
+      border-radius: var(--radius); background: var(--primary); padding: 2rem; color: var(--primary-fg);
+    }
+    .contact-info-card h3 {
+      font-family: var(--font-serif); font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem;
+    }
+    .contact-info-items { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-info-item { display: flex; align-items: flex-start; gap: 1rem; }
+    .contact-info-icon {
+      flex-shrink: 0; width: 2.5rem; height: 2.5rem; border-radius: 0.5rem;
+      background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+    }
+    .contact-info-icon .icon { color: var(--primary-fg); }
+    .contact-info-item p:first-of-type { font-size: 0.875rem; font-weight: 600; }
+    .contact-info-item p:last-of-type { font-size: 0.875rem; color: rgba(255,255,255,0.8); margin-top: 0.125rem; }
+    .schedule-card {
+      border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); padding: 1.5rem;
+    }
+    .schedule-card h4 {
+      font-family: var(--font-serif); font-size: 1.125rem; font-weight: 700;
+      color: var(--foreground); margin-bottom: 0.5rem;
+    }
+    .schedule-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+    .schedule-row {
+      display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--muted);
+    }
+    .schedule-row span:last-child { font-weight: 500; color: var(--foreground); }
+    .contact-form-card {
+      border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); padding: 2rem;
+    }
+    .contact-form-card label {
+      display: block; font-size: 0.875rem; font-weight: 500; color: var(--foreground); margin-bottom: 0.375rem;
+    }
+    .success-message {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 3rem;
+      border-radius: var(--radius); border: 1px solid rgba(45,106,79,0.3); background: rgba(45,106,79,0.05);
+    }
+    .success-message .icon-xl { color: var(--primary); margin-bottom: 1rem; }
+    .success-message h3 {
+      font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--foreground);
+    }
+    .success-message p { margin-top: 0.5rem; color: var(--muted); max-width: 28rem; }
+
+    @media (min-width: 1024px) { .contact-grid { grid-template-columns: 2fr 3fr; } }
+
+    /* ===== FOOTER ===== */
+    .footer { background: var(--foreground); color: rgba(255,255,255,0.9); }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 1rem; }
+    .footer-grid { display: grid; gap: 3rem; }
+    .footer-brand { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .footer-brand .icon { color: rgba(255,255,255,0.9); }
+    .footer-brand span { font-family: var(--font-serif); font-size: 1.125rem; font-weight: 700; }
+    .footer-desc { font-size: 0.875rem; line-height: 1.6; color: rgba(255,255,255,0.6); }
+    .footer-group h4 {
+      font-size: 0.875rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 1rem; color: rgba(255,255,255,0.85);
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-links li button {
+      font-size: 0.875rem; color: rgba(255,255,255,0.5); transition: color 0.2s; width: 100%; text-align: left;
+    }
+    .footer-links li button:hover { color: #fff; }
+    .footer-bottom {
+      margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    }
+    .footer-bottom p { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+
+    @media (min-width: 768px) {
+      .footer-grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; }
+      .footer-bottom { flex-direction: row; justify-content: space-between; }
+    }
+
+    /* Hidden sections for tab content */
+    .tab-content { display: none; }
+    .tab-content.active { display: grid; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="#inicio" class="navbar-brand" onclick="smoothScroll(event, '#inicio')">
+        <svg class="icon-lg navbar-brand-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/><path d="M5 20h14"/></svg>
+        <span>EcoVida</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#inicio" class="nav-link" onclick="smoothScroll(event, '#inicio')">Inicio</a>
+        <a href="#secciones" class="nav-link" onclick="smoothScroll(event, '#secciones')">Secciones</a>
+        <a href="#galeria" class="nav-link" onclick="smoothScroll(event, '#galeria')">Galeria</a>
+        <a href="#foro" class="nav-link" onclick="smoothScroll(event, '#foro')">Foro</a>
+        <a href="#contacto" class="nav-link" onclick="smoothScroll(event, '#contacto')">Contacto</a>
+      </div>
+
+      <div class="nav-actions">
+        <div style="position:relative">
+          <button class="nav-icon-btn" onclick="toggleSearch()" aria-label="Buscar">
+            <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+          <div class="search-dropdown" id="searchDropdown">
+            <div class="search-input-wrap">
+              <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input type="text" class="input" id="searchInput" placeholder="Buscar temas ambientales..." oninput="handleSearch(this.value)">
+            </div>
+            <div class="search-results" id="searchResults"></div>
+          </div>
+        </div>
+        <a href="#contacto" class="btn btn-primary btn-sm" onclick="smoothScroll(event, '#contacto')">Contactar</a>
+      </div>
+
+      <div class="nav-mobile-btns">
+        <button class="nav-icon-btn" onclick="toggleMobileSearch()" aria-label="Buscar">
+          <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+        <button class="nav-icon-btn" onclick="toggleMobileMenu()" aria-label="Menu" id="menuToggle">
+          <svg class="icon" id="menuIcon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg class="icon" id="closeIcon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-search" id="mobileSearch">
+      <div class="search-input-wrap">
+        <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" class="input" id="mobileSearchInput" placeholder="Buscar temas ambientales..." oninput="handleSearch(this.value)">
+      </div>
+      <div class="search-results" id="mobileSearchResults"></div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-menu-inner">
+        <a href="#inicio" class="mobile-nav-link" onclick="closeMobileMenu(); smoothScroll(event, '#inicio')">Inicio</a>
+        <a href="#secciones" class="mobile-nav-link" onclick="closeMobileMenu(); smoothScroll(event, '#secciones')">Secciones</a>
+        <a href="#galeria" class="mobile-nav-link" onclick="closeMobileMenu(); smoothScroll(event, '#galeria')">Galeria</a>
+        <a href="#foro" class="mobile-nav-link" onclick="closeMobileMenu(); smoothScroll(event, '#foro')">Foro</a>
+        <a href="#contacto" class="mobile-nav-link" onclick="closeMobileMenu(); smoothScroll(event, '#contacto')">Contacto</a>
+        <a href="#contacto" class="btn btn-primary btn-sm" style="margin-top:0.5rem" onclick="closeMobileMenu(); smoothScroll(event, '#contacto')">Contactar</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Plataforma educativa ambiental</p>
+      <h1 class="hero-title">Protegiendo nuestro planeta para las futuras generaciones</h1>
+      <p class="hero-desc">Aprende, participa y contribuye al cuidado del medio ambiente. Juntos podemos construir un futuro sostenible.</p>
+      <div class="hero-buttons">
+        <a href="#secciones" class="btn btn-primary btn-lg" onclick="smoothScroll(event, '#secciones')">Explorar Secciones</a>
+        <a href="#foro" class="btn btn-outline btn-lg" onclick="smoothScroll(event, '#foro')">Unirse al Foro</a>
+      </div>
+    </div>
+    <a href="#mision" class="hero-scroll" onclick="smoothScroll(event, '#mision')" aria-label="Desplazarse hacia abajo">
+      <svg class="icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </a>
+  </section>
+
+  <!-- ===== MISION / VISION / OBJETIVOS ===== -->
+  <section class="section" id="mision">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Nuestros Pilares</p>
+        <h2 class="section-title">Comprometidos con el planeta</h2>
+      </div>
+      <div class="mission-grid">
+        <div class="mission-card">
+          <div class="mission-icon">
+            <svg class="icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <h3>Mision</h3>
+          <p>Fomentar la conciencia ambiental a traves de la educacion, la investigacion y la participacion activa de la comunidad, promoviendo practicas sostenibles que contribuyan a la conservacion de nuestro entorno natural.</p>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon">
+            <svg class="icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3>Vision</h3>
+          <p>Ser una plataforma de referencia en la difusion del conocimiento ambiental, inspirando a individuos y comunidades a adoptar un estilo de vida en armonia con la naturaleza para garantizar un futuro sostenible.</p>
+        </div>
+        <div class="mission-card">
+          <div class="mission-icon">
+            <svg class="icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2 6.3-6.4 2.1 2-6.3z"/></svg>
+          </div>
+          <h3>Objetivos</h3>
+          <p>Informar sobre problematicas ambientales actuales, ofrecer herramientas educativas accesibles, crear espacios de dialogo comunitario y promover acciones concretas para la proteccion del medio ambiente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECCIONES TEMATICAS ===== -->
+  <section class="section section-alt" id="secciones">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Explora los temas</p>
+        <h2 class="section-title">Secciones Tematicas</h2>
+        <p class="section-desc">Cada seccion aborda un aspecto clave del medio ambiente con informacion relevante, datos importantes y consejos practicos para que puedas contribuir al cambio.</p>
+      </div>
+
+      <div class="tabs-wrap">
+        <button class="tab-btn active" onclick="switchTab('biodiversidad', this)">
+          <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/><path d="M5 20h14"/></svg>
+          Biodiversidad
+        </button>
+        <button class="tab-btn" onclick="switchTab('clima', this)">
+          <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>
+          Cambio Climatico
+        </button>
+        <button class="tab-btn" onclick="switchTab('reciclaje', this)">
+          <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 4.875 7.97l5.166-2.98"/><path d="m14.5 7.5 3-5.2"/><path d="M10 5l3.5-2"/></svg>
+          Reciclaje
+        </button>
+        <button class="tab-btn" onclick="switchTab('energia', this)">
+          <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>
+          Energias Renovables
+        </button>
+        <button class="tab-btn" onclick="switchTab('agua', this)">
+          <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>
+          Recursos Hidricos
+        </button>
+        <button class="tab-btn" onclick="switchTab('bosques', this)">
+          <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14l-3-3.3a1 1 0 0 1 .7-1.7h3.6L11 6.3a1 1 0 0 1 1.4 0l2.7 2.7h3.6a1 1 0 0 1 .7 1.7z"/><path d="M12 22v-3"/></svg>
+          Bosques y Selvas
+        </button>
+      </div>
+
+      <!-- Tab Contents -->
+      <div class="thematic-grid tab-content active" id="tab-biodiversidad">
+        <div class="thematic-image">
+          <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=800&q=80" alt="Ave tropical colorida en un bosque">
+          <div class="thematic-image-overlay"></div>
+          <div class="thematic-image-text">
+            <small>La riqueza de la vida en la Tierra</small>
+            <h3>Biodiversidad</h3>
+          </div>
+        </div>
+        <div class="thematic-content">
+          <p>La biodiversidad abarca toda la variedad de formas de vida en nuestro planeta, desde los microorganismos hasta las grandes ballenas. Cada especie cumple un rol fundamental en el equilibrio de los ecosistemas.</p>
+          <div class="facts-box">
+            <h4>Datos Importantes</h4>
+            <ul class="fact-list">
+              <li class="fact-item"><span class="fact-num">1</span> Se estima que existen entre 8 y 10 millones de especies en la Tierra</li>
+              <li class="fact-item"><span class="fact-num">2</span> Cada dia se pierden aproximadamente 150 especies por actividad humana</li>
+              <li class="fact-item"><span class="fact-num">3</span> Los bosques tropicales albergan mas del 50% de las especies terrestres</li>
+            </ul>
+          </div>
+          <div class="tips-box">
+            <h4>Como puedes ayudar</h4>
+            <ul class="tip-list">
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Planta arboles nativos en tu comunidad</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Evita comprar productos derivados de especies en peligro</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Apoya reservas naturales y areas protegidas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="thematic-grid tab-content" id="tab-clima">
+        <div class="thematic-image">
+          <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=800&q=80" alt="Paisaje mostrando el impacto del cambio climatico">
+          <div class="thematic-image-overlay"></div>
+          <div class="thematic-image-text">
+            <small>El desafio mas grande de nuestra era</small>
+            <h3>Cambio Climatico</h3>
+          </div>
+        </div>
+        <div class="thematic-content">
+          <p>El cambio climatico es una alteracion significativa de los patrones climaticos globales causada principalmente por las emisiones de gases de efecto invernadero. Sus consecuencias afectan a todos los seres vivos del planeta.</p>
+          <div class="facts-box">
+            <h4>Datos Importantes</h4>
+            <ul class="fact-list">
+              <li class="fact-item"><span class="fact-num">1</span> La temperatura global ha aumentado 1.1 grados centigrados desde la era preindustrial</li>
+              <li class="fact-item"><span class="fact-num">2</span> El nivel del mar sube aproximadamente 3.3 mm por ano</li>
+              <li class="fact-item"><span class="fact-num">3</span> Los ultimos 8 anos han sido los mas calidos registrados en la historia</li>
+            </ul>
+          </div>
+          <div class="tips-box">
+            <h4>Como puedes ayudar</h4>
+            <ul class="tip-list">
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Reduce tu huella de carbono usando transporte publico o bicicleta</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Apoya politicas de energia limpia</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Reduce el consumo de carne roja</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="thematic-grid tab-content" id="tab-reciclaje">
+        <div class="thematic-image">
+          <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800&q=80" alt="Materiales reciclables organizados">
+          <div class="thematic-image-overlay"></div>
+          <div class="thematic-image-text">
+            <small>Reducir, reutilizar y reciclar</small>
+            <h3>Reciclaje y Residuos</h3>
+          </div>
+        </div>
+        <div class="thematic-content">
+          <p>La gestion adecuada de residuos es fundamental para reducir la contaminacion y conservar los recursos naturales. El reciclaje permite dar nueva vida a materiales que de otro modo acabarian en vertederos.</p>
+          <div class="facts-box">
+            <h4>Datos Importantes</h4>
+            <ul class="fact-list">
+              <li class="fact-item"><span class="fact-num">1</span> Solo se recicla el 9% de todo el plastico producido en el mundo</li>
+              <li class="fact-item"><span class="fact-num">2</span> Una botella de plastico tarda aproximadamente 450 anos en descomponerse</li>
+              <li class="fact-item"><span class="fact-num">3</span> Reciclar una tonelada de papel salva 17 arboles</li>
+            </ul>
+          </div>
+          <div class="tips-box">
+            <h4>Como puedes ayudar</h4>
+            <ul class="tip-list">
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Separa tus residuos en organicos, reciclables y no reciclables</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Utiliza bolsas reutilizables para tus compras</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Compra productos con empaques reciclables o biodegradables</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="thematic-grid tab-content" id="tab-energia">
+        <div class="thematic-image">
+          <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80" alt="Turbinas eolicas y paneles solares">
+          <div class="thematic-image-overlay"></div>
+          <div class="thematic-image-text">
+            <small>El futuro energetico sostenible</small>
+            <h3>Energias Renovables</h3>
+          </div>
+        </div>
+        <div class="thematic-content">
+          <p>Las energias renovables provienen de fuentes naturales que se regeneran constantemente, como el sol, el viento, el agua y la biomasa. Son la clave para reducir nuestra dependencia de los combustibles fosiles.</p>
+          <div class="facts-box">
+            <h4>Datos Importantes</h4>
+            <ul class="fact-list">
+              <li class="fact-item"><span class="fact-num">1</span> La energia solar es la fuente de electricidad mas barata de la historia</li>
+              <li class="fact-item"><span class="fact-num">2</span> Las renovables generaron el 29% de la electricidad mundial en 2023</li>
+              <li class="fact-item"><span class="fact-num">3</span> La energia eolica puede abastecer al mundo entero 18 veces</li>
+            </ul>
+          </div>
+          <div class="tips-box">
+            <h4>Como puedes ayudar</h4>
+            <ul class="tip-list">
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Instala paneles solares si es posible en tu hogar</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Elige proveedores de energia verde</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Reduce el consumo energetico con electrodomesticos eficientes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="thematic-grid tab-content" id="tab-agua">
+        <div class="thematic-image">
+          <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80" alt="Agua cristalina fluyendo por un arroyo">
+          <div class="thematic-image-overlay"></div>
+          <div class="thematic-image-text">
+            <small>El agua es vida</small>
+            <h3>Recursos Hidricos</h3>
+          </div>
+        </div>
+        <div class="thematic-content">
+          <p>El agua dulce es un recurso vital y finito. Solo el 2.5% del agua en la Tierra es dulce, y gran parte de ella esta atrapada en glaciares. La conservacion del agua es esencial para la supervivencia de todas las formas de vida.</p>
+          <div class="facts-box">
+            <h4>Datos Importantes</h4>
+            <ul class="fact-list">
+              <li class="fact-item"><span class="fact-num">1</span> 2.200 millones de personas carecen de acceso a agua potable segura</li>
+              <li class="fact-item"><span class="fact-num">2</span> La agricultura consume el 70% del agua dulce del mundo</li>
+              <li class="fact-item"><span class="fact-num">3</span> Para 2025, la mitad de la poblacion mundial podria vivir en areas con escasez de agua</li>
+            </ul>
+          </div>
+          <div class="tips-box">
+            <h4>Como puedes ayudar</h4>
+            <ul class="tip-list">
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Repara las fugas de agua en tu hogar</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Toma duchas mas cortas y cierra el grifo al cepillarte</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Reutiliza el agua de lluvia para riego</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="thematic-grid tab-content" id="tab-bosques">
+        <div class="thematic-image">
+          <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80" alt="Bosque ancestral con rayos de sol">
+          <div class="thematic-image-overlay"></div>
+          <div class="thematic-image-text">
+            <small>Los pulmones del planeta</small>
+            <h3>Bosques y Selvas</h3>
+          </div>
+        </div>
+        <div class="thematic-content">
+          <p>Los bosques cubren aproximadamente el 31% de la superficie terrestre y son esenciales para la vida en la Tierra. Absorben CO2, producen oxigeno, regulan el clima y albergan una inmensa biodiversidad.</p>
+          <div class="facts-box">
+            <h4>Datos Importantes</h4>
+            <ul class="fact-list">
+              <li class="fact-item"><span class="fact-num">1</span> Se pierden 10 millones de hectareas de bosque al ano</li>
+              <li class="fact-item"><span class="fact-num">2</span> Los bosques absorben 2.600 millones de toneladas de CO2 anualmente</li>
+              <li class="fact-item"><span class="fact-num">3</span> El Amazonas produce el 20% del oxigeno mundial</li>
+            </ul>
+          </div>
+          <div class="tips-box">
+            <h4>Como puedes ayudar</h4>
+            <ul class="tip-list">
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Compra productos certificados FSC (manejo forestal responsable)</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Participa en campanas de reforestacion</li>
+              <li class="tip-item"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/></svg> Reduce el uso de papel y opta por alternativas digitales</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALERIA MULTIMEDIA ===== -->
+  <section class="section" id="galeria">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Recursos visuales</p>
+        <h2 class="section-title">Galeria Multimedia</h2>
+        <p class="section-desc">Explora nuestra coleccion de imagenes y videos que muestran la belleza del medio ambiente y los desafios que enfrenta nuestro planeta.</p>
+      </div>
+
+      <div class="tabs-wrap">
+        <button class="tab-btn active" onclick="filterGallery('Todos', this)">Todos</button>
+        <button class="tab-btn" onclick="filterGallery('Bosques', this)">Bosques</button>
+        <button class="tab-btn" onclick="filterGallery('Biodiversidad', this)">Biodiversidad</button>
+        <button class="tab-btn" onclick="filterGallery('Agua', this)">Agua</button>
+        <button class="tab-btn" onclick="filterGallery('Clima', this)">Clima</button>
+        <button class="tab-btn" onclick="filterGallery('Energia', this)">Energia</button>
+        <button class="tab-btn" onclick="filterGallery('Oceanos', this)">Oceanos</button>
+        <button class="tab-btn" onclick="filterGallery('Documentales', this)">Documentales</button>
+      </div>
+
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+      <button class="lightbox-close" onclick="closeLightbox()" aria-label="Cerrar">
+        <svg class="icon-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <button class="lightbox-prev" onclick="prevSlide()" aria-label="Anterior">
+        <svg style="width:2rem;height:2rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <button class="lightbox-next" onclick="nextSlide()" aria-label="Siguiente">
+        <svg style="width:2rem;height:2rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+      <div class="lightbox-content">
+        <div class="lightbox-media" id="lightboxMedia"></div>
+        <div class="lightbox-info">
+          <h4 id="lightboxTitle"></h4>
+          <p id="lightboxDesc"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FORO COMUNITARIO ===== -->
+  <section class="section section-alt" id="foro">
+    <div class="container-sm">
+      <div class="section-header">
+        <p class="section-tag">Comunidad</p>
+        <h2 class="section-title">Foro Comunitario</h2>
+        <p class="section-desc">Comparte tus ideas, experiencias y conocimientos sobre sostenibilidad. Juntos podemos aprender y generar un mayor impacto.</p>
+      </div>
+
+      <div style="margin-bottom:2rem">
+        <button class="btn btn-primary" onclick="toggleNewPost()">
+          <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Crear Nueva Publicacion
+        </button>
+      </div>
+
+      <div class="new-post-form" id="newPostForm">
+        <h3>Nueva Publicacion</h3>
+        <div class="form-grid">
+          <div class="form-row-2">
+            <input type="text" class="input" id="npAuthor" placeholder="Tu nombre (opcional)">
+            <select class="select-field" id="npCategory">
+              <option value="General">General</option>
+              <option value="Reciclaje">Reciclaje</option>
+              <option value="Energia">Energia</option>
+              <option value="Bosques">Bosques</option>
+              <option value="Agua">Agua</option>
+              <option value="Clima">Clima</option>
+              <option value="Biodiversidad">Biodiversidad</option>
+            </select>
+          </div>
+          <input type="text" class="input" id="npTitle" placeholder="Titulo de tu publicacion">
+          <textarea class="textarea" id="npContent" rows="4" placeholder="Escribe tu mensaje aqui..."></textarea>
+          <div class="form-buttons">
+            <button class="btn btn-primary" onclick="createPost()">Publicar</button>
+            <button class="btn btn-outline-dark" onclick="toggleNewPost()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="forum-posts" id="forumPosts"></div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACTO ===== -->
+  <section class="section" id="contacto">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Comunicate con nosotros</p>
+        <h2 class="section-title">Formulario de Contacto</h2>
+        <p class="section-desc">Tienes preguntas, sugerencias o quieres colaborar con nosotros? No dudes en escribirnos. Te responderemos lo antes posible.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div>
+          <div class="contact-info-card">
+            <h3>Informacion de Contacto</h3>
+            <div class="contact-info-items">
+              <div class="contact-info-item">
+                <div class="contact-info-icon">
+                  <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <div>
+                  <p>Direccion</p>
+                  <p>Av. Ecologica 1234, Ciudad Verde</p>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <div class="contact-info-icon">
+                  <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                </div>
+                <div>
+                  <p>Correo Electronico</p>
+                  <p>contacto@ecovida.org</p>
+                </div>
+              </div>
+              <div class="contact-info-item">
+                <div class="contact-info-icon">
+                  <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div>
+                  <p>Telefono</p>
+                  <p>+1 (234) 567-890</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="schedule-card" style="margin-top:2rem">
+            <h4>Horario de Atencion</h4>
+            <div class="schedule-rows">
+              <div class="schedule-row"><span>Lunes - Viernes</span><span>8:00 - 18:00</span></div>
+              <div class="schedule-row"><span>Sabado</span><span>9:00 - 14:00</span></div>
+              <div class="schedule-row"><span>Domingo</span><span>Cerrado</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="contactFormWrap">
+          <form class="contact-form-card" id="contactForm" onsubmit="handleContactSubmit(event)">
+            <div class="form-grid">
+              <div class="form-row-2">
+                <div>
+                  <label for="contactName">Nombre completo *</label>
+                  <input type="text" class="input" id="contactName" placeholder="Tu nombre">
+                  <p class="error-text" id="errorName" style="display:none"></p>
+                </div>
+                <div>
+                  <label for="contactEmail">Correo electronico *</label>
+                  <input type="email" class="input" id="contactEmail" placeholder="tu@correo.com">
+                  <p class="error-text" id="errorEmail" style="display:none"></p>
+                </div>
+              </div>
+              <div>
+                <label for="contactSubject">Asunto *</label>
+                <input type="text" class="input" id="contactSubject" placeholder="Asunto del mensaje">
+                <p class="error-text" id="errorSubject" style="display:none"></p>
+              </div>
+              <div>
+                <label for="contactMessage">Mensaje *</label>
+                <textarea class="textarea" id="contactMessage" rows="6" placeholder="Escribe tu mensaje aqui..."></textarea>
+                <p class="error-text" id="errorMessage" style="display:none"></p>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg">
+                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="m22 2-11 11"/></svg>
+                Enviar Mensaje
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.9C15.5 4.9 17 3.5 17 3.5s1.5 2.5-.5 6c-1 1.7-2.5 3-4.5 4l3 7"/><path d="M5 20h14"/></svg>
+            <span>EcoVida</span>
+          </div>
+          <p class="footer-desc">Plataforma educativa dedicada a la conservacion del medio ambiente. Juntos podemos construir un futuro sostenible para las generaciones venideras.</p>
+        </div>
+        <div class="footer-group">
+          <h4>Navegacion</h4>
+          <ul class="footer-links">
+            <li><button onclick="smoothScrollDirect('#inicio')">Inicio</button></li>
+            <li><button onclick="smoothScrollDirect('#secciones')">Secciones</button></li>
+            <li><button onclick="smoothScrollDirect('#galeria')">Galeria</button></li>
+            <li><button onclick="smoothScrollDirect('#foro')">Foro</button></li>
+            <li><button onclick="smoothScrollDirect('#contacto')">Contacto</button></li>
+          </ul>
+        </div>
+        <div class="footer-group">
+          <h4>Temas</h4>
+          <ul class="footer-links">
+            <li><button onclick="smoothScrollDirect('#secciones')">Biodiversidad</button></li>
+            <li><button onclick="smoothScrollDirect('#secciones')">Cambio Climatico</button></li>
+            <li><button onclick="smoothScrollDirect('#secciones')">Reciclaje</button></li>
+            <li><button onclick="smoothScrollDirect('#secciones')">Energias Renovables</button></li>
+            <li><button onclick="smoothScrollDirect('#secciones')">Recursos Hidricos</button></li>
+          </ul>
+        </div>
+        <div class="footer-group">
+          <h4>Recursos</h4>
+          <ul class="footer-links">
+            <li><button onclick="smoothScrollDirect('#galeria')">Documentales</button></li>
+            <li><button onclick="smoothScrollDirect('#galeria')">Galeria de fotos</button></li>
+            <li><button onclick="smoothScrollDirect('#foro')">Foro comunitario</button></li>
+            <li><button onclick="smoothScrollDirect('#contacto')">Preguntas frecuentes</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>2026 EcoVida. Todos los derechos reservados.</p>
+        <p>Hecho con compromiso por el medio ambiente</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== NAVIGATION =====
+    function smoothScroll(e, target) {
+      e.preventDefault();
+      const el = document.querySelector(target);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+    function smoothScrollDirect(target) {
+      const el = document.querySelector(target);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ===== SEARCH =====
+    const allContent = [
+      "Biodiversidad - Protegiendo la diversidad de especies",
+      "Cambio Climatico - Actuando contra el calentamiento global",
+      "Reciclaje - Reducir, reutilizar y reciclar",
+      "Energias Renovables - Fuentes de energia limpia",
+      "Agua - Conservacion de los recursos hidricos",
+      "Bosques - Protegiendo nuestros pulmones verdes",
+      "Oceanos - Cuidando los ecosistemas marinos",
+      "Mision - Fomentar la conciencia ambiental",
+      "Vision - Un mundo sostenible para todos",
+      "Foro comunitario - Comparte tus experiencias",
+      "Galeria multimedia - Imagenes y videos del medio ambiente",
+      "Contacto - Comunicate con nosotros",
+      "Sostenibilidad - Practicas para un futuro mejor",
+      "Contaminacion - Reduciendo el impacto ambiental",
+      "Deforestacion - Protegiendo los ecosistemas forestales",
+    ];
+
+    function toggleSearch() {
+      document.getElementById('searchDropdown').classList.toggle('active');
+      const input = document.getElementById('searchInput');
+      if (document.getElementById('searchDropdown').classList.contains('active')) input.focus();
+    }
+    function toggleMobileSearch() {
+      document.getElementById('mobileSearch').classList.toggle('active');
+      const input = document.getElementById('mobileSearchInput');
+      if (document.getElementById('mobileSearch').classList.contains('active')) input.focus();
+    }
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const open = document.getElementById('menuIcon');
+      const close = document.getElementById('closeIcon');
+      menu.classList.toggle('active');
+      if (menu.classList.contains('active')) {
+        open.style.display = 'none'; close.style.display = 'block';
+      } else {
+        open.style.display = 'block'; close.style.display = 'none';
+      }
+    }
+    function closeMobileMenu() {
+      document.getElementById('mobileMenu').classList.remove('active');
+      document.getElementById('menuIcon').style.display = 'block';
+      document.getElementById('closeIcon').style.display = 'none';
+    }
+
+    function handleSearch(query) {
+      const resultsEl = document.getElementById('searchResults');
+      const mobileResultsEl = document.getElementById('mobileSearchResults');
+      if (!query.trim()) { resultsEl.innerHTML = ''; mobileResultsEl.innerHTML = ''; return; }
+      const filtered = allContent.filter(i => i.toLowerCase().includes(query.toLowerCase()));
+      let html = '';
+      if (filtered.length > 0) {
+        filtered.forEach(r => { html += '<button class="search-result-item" onclick="this.closest(\'.search-dropdown, .mobile-search\').classList.remove(\'active\')">' + r + '</button>'; });
+      } else {
+        html = '<p class="search-no-results">No se encontraron resultados para "' + query + '"</p>';
+      }
+      resultsEl.innerHTML = html;
+      mobileResultsEl.innerHTML = html;
+    }
+
+    // ===== THEMATIC TABS =====
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('#secciones .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+    }
+
+    // ===== GALLERY =====
+    const galleryItems = [
+      { id: 1, type: 'image', src: 'https://images.unsplash.com/photo-1511497584788-876760111969?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1511497584788-876760111969?w=400&q=80', title: 'Selva tropical al amanecer', desc: 'Vista aerea de un exuberante bosque tropical con neblina matutina', cat: 'Bosques' },
+      { id: 2, type: 'image', src: 'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=400&q=80', title: 'Fauna silvestre', desc: 'La biodiversidad es el pilar fundamental de los ecosistemas saludables', cat: 'Biodiversidad' },
+      { id: 3, type: 'image', src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&q=80', title: 'Aguas cristalinas', desc: 'Los rios y arroyos son arterias vitales de nuestros ecosistemas', cat: 'Agua' },
+      { id: 4, type: 'image', src: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80', title: 'Impacto climatico', desc: 'El cambio climatico transforma drasticamente nuestros paisajes', cat: 'Clima' },
+      { id: 5, type: 'image', src: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&q=80', title: 'Reciclaje responsable', desc: 'Separar y reciclar materiales es una accion concreta por el planeta', cat: 'Reciclaje' },
+      { id: 6, type: 'image', src: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&q=80', title: 'Energia del futuro', desc: 'Las energias renovables son el camino hacia un futuro sostenible', cat: 'Energia' },
+      { id: 7, type: 'image', src: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=80', title: 'Bosque ancestral', desc: 'Los bosques milenarios son tesoros de biodiversidad', cat: 'Bosques' },
+      { id: 8, type: 'image', src: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=1200&q=80', thumb: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=400&q=80', title: 'Arrecife de coral', desc: 'Los oceanos albergan una rica diversidad de vida marina', cat: 'Oceanos' },
+      { id: 9, type: 'video', src: 'https://www.youtube.com/embed/HQTUWK7CM-Y', thumb: 'https://images.unsplash.com/photo-1511497584788-876760111969?w=400&q=80', title: 'Documental: Nuestro Planeta', desc: 'Un recorrido visual por los ecosistemas mas asombrosos de la Tierra', cat: 'Documentales' },
+      { id: 10, type: 'video', src: 'https://www.youtube.com/embed/0Puv0Pss33M', thumb: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80', title: 'Cambio Climatico Explicado', desc: 'Comprendiendo las causas y efectos del cambio climatico global', cat: 'Documentales' },
+    ];
+    let filteredGallery = [...galleryItems];
+    let lightboxIndex = 0;
+
+    function renderGallery() {
+      const grid = document.getElementById('galleryGrid');
+      if (filteredGallery.length === 0) { grid.innerHTML = '<div class="gallery-empty" style="grid-column:1/-1">No hay elementos en esta categoria.</div>'; return; }
+      grid.innerHTML = filteredGallery.map((item, i) => `
+        <button class="gallery-item" onclick="openLightbox(${i})">
+          <img src="${item.thumb}" alt="${item.title}" loading="lazy">
+          <div class="gallery-hover">
+            <div class="gallery-hover-meta">
+              <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">${item.type === 'video' ? '<polygon points="23 7 16 12 23 17 23 7"/><rect width="15" height="14" x="1" y="5" rx="2" ry="2"/>' : '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>'}</svg>
+              <span>${item.cat}</span>
+            </div>
+            <h4>${item.title}</h4>
+          </div>
+          ${item.type === 'video' ? '<div class="gallery-play"><svg class="icon" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>' : ''}
+        </button>
+      `).join('');
+    }
+
+    function filterGallery(cat, btn) {
+      document.querySelectorAll('#galeria .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filteredGallery = cat === 'Todos' ? [...galleryItems] : galleryItems.filter(i => i.cat === cat);
+      renderGallery();
+    }
+
+    function openLightbox(index) {
+      lightboxIndex = index;
+      updateLightbox();
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+      document.getElementById('lightboxMedia').innerHTML = '';
+    }
+    function nextSlide() { lightboxIndex = (lightboxIndex + 1) % filteredGallery.length; updateLightbox(); }
+    function prevSlide() { lightboxIndex = (lightboxIndex - 1 + filteredGallery.length) % filteredGallery.length; updateLightbox(); }
+    function updateLightbox() {
+      const item = filteredGallery[lightboxIndex];
+      const media = document.getElementById('lightboxMedia');
+      if (item.type === 'image') {
+        media.innerHTML = '<img src="' + item.src + '" alt="' + item.title + '">';
+      } else {
+        media.innerHTML = '<iframe src="' + item.src + '" title="' + item.title + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>';
+      }
+      document.getElementById('lightboxTitle').textContent = item.title;
+      document.getElementById('lightboxDesc').textContent = item.desc;
+    }
+
+    // ===== FORUM =====
+    let forumPosts = [
+      { id: 1, author: 'Maria Garcia', avatar: 'MG', title: 'Consejos para reducir el plastico en el hogar', content: 'He estado implementando cambios en mi hogar para reducir el consumo de plastico. Empece reemplazando las bolsas de plastico por bolsas reutilizables de tela, y luego pase a usar envases de vidrio para almacenar alimentos. Me encantaria escuchar sus ideas y experiencias.', category: 'Reciclaje', time: 'Hace 2 horas', likes: 24, comments: [
+        { id: 1, author: 'Carlos Lopez', text: 'Excelente iniciativa Maria! Yo tambien empece usando cepillos de dientes de bambu y jabon en barra en lugar de envases plasticos.', time: 'Hace 1 hora', likes: 8 },
+        { id: 2, author: 'Ana Ruiz', text: 'Les recomiendo los mercados locales donde venden a granel. Llevan sus propios envases y ahorran mucho plastico.', time: 'Hace 45 min', likes: 5 },
+      ]},
+      { id: 2, author: 'Pedro Sanchez', avatar: 'PS', title: 'Mi experiencia con paneles solares', content: 'Hace 6 meses instale paneles solares en mi casa y quiero compartir mi experiencia. La inversion inicial fue significativa, pero ya estoy viendo ahorros en mi factura electrica. Ademas, el excedente de energia lo vendo a la red.', category: 'Energia', time: 'Hace 5 horas', likes: 31, comments: [
+        { id: 3, author: 'Luis Torres', text: 'Muy interesante Pedro! Cuanto tiempo estimas que tardara en amortizar la inversion? Yo estoy evaluando hacerlo.', time: 'Hace 3 horas', likes: 4 },
+      ]},
+      { id: 3, author: 'Laura Martinez', avatar: 'LM', title: 'Voluntariado en reforestacion - busco participantes', content: 'Estamos organizando una jornada de reforestacion en el parque nacional este fin de semana. Necesitamos voluntarios que quieran ayudar a plantar arboles nativos. Proporcionamos herramientas, agua y almuerzo.', category: 'Bosques', time: 'Hace 8 horas', likes: 47, comments: [
+        { id: 4, author: 'Sofia Mendez', text: 'Me apunto Laura! Puedo llevar a 3 amigos mas. Donde nos encontramos?', time: 'Hace 6 horas', likes: 12 },
+        { id: 5, author: 'Roberto Diaz', text: 'Excelente iniciativa! Contad conmigo. Tengo experiencia en plantacion de arboles nativos.', time: 'Hace 4 horas', likes: 7 },
+      ]},
+    ];
+    let expandedPost = null;
+
+    function renderForum() {
+      const container = document.getElementById('forumPosts');
+      container.innerHTML = forumPosts.map(post => `
+        <article class="forum-card">
+          <div class="forum-card-body">
+            <div class="forum-header">
+              <div class="forum-avatar">${post.avatar}</div>
+              <div class="forum-meta">
+                <div class="forum-author-row">
+                  <span class="forum-author">${post.author}</span>
+                  <span class="forum-category-badge">${post.category}</span>
+                </div>
+                <div class="forum-time">
+                  <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  ${post.time}
+                </div>
+              </div>
+            </div>
+            <h3 class="forum-title">${post.title}</h3>
+            <p class="forum-text">${post.content}</p>
+            <div class="forum-actions">
+              <button class="forum-action-btn" onclick="likePost(${post.id})">
+                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg>
+                ${post.likes}
+              </button>
+              <button class="forum-action-btn" onclick="toggleComments(${post.id})">
+                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                ${post.comments.length} comentarios
+                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">${expandedPost === post.id ? '<polyline points="18 15 12 9 6 15"/>' : '<polyline points="6 9 12 15 18 9"/>'}</svg>
+              </button>
+            </div>
+          </div>
+          <div class="forum-comments ${expandedPost === post.id ? 'active' : ''}" id="comments-${post.id}">
+            ${post.comments.length > 0 ? '<div class="comments-list">' + post.comments.map(c => `
+              <div class="comment">
+                <div class="comment-avatar"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="comment-body">
+                  <div class="comment-author-row"><span class="comment-author">${c.author}</span><span class="comment-time">${c.time}</span></div>
+                  <p class="comment-text">${c.text}</p>
+                  <button class="comment-like" onclick="likeComment(${post.id}, ${c.id})"><svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg> ${c.likes}</button>
+                </div>
+              </div>
+            `).join('') + '</div>' : ''}
+            <div class="add-comment">
+              <input type="text" class="input" id="comment-input-${post.id}" placeholder="Escribe un comentario..." onkeydown="if(event.key==='Enter')addComment(${post.id})">
+              <button class="btn btn-primary btn-icon" onclick="addComment(${post.id})" aria-label="Enviar comentario">
+                <svg class="icon-sm" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="m22 2-11 11"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function likePost(id) { forumPosts = forumPosts.map(p => p.id === id ? {...p, likes: p.likes + 1} : p); renderForum(); }
+    function likeComment(postId, commentId) {
+      forumPosts = forumPosts.map(p => p.id === postId ? {...p, comments: p.comments.map(c => c.id === commentId ? {...c, likes: c.likes + 1} : c)} : p);
+      renderForum();
+    }
+    function toggleComments(id) { expandedPost = expandedPost === id ? null : id; renderForum(); }
+    function addComment(postId) {
+      const input = document.getElementById('comment-input-' + postId);
+      const text = input.value.trim();
+      if (!text) return;
+      forumPosts = forumPosts.map(p => p.id === postId ? {...p, comments: [...p.comments, { id: Date.now(), author: 'Usuario Anonimo', text, time: 'Justo ahora', likes: 0 }]} : p);
+      renderForum();
+    }
+    function toggleNewPost() { document.getElementById('newPostForm').classList.toggle('active'); }
+    function createPost() {
+      const title = document.getElementById('npTitle').value.trim();
+      const content = document.getElementById('npContent').value.trim();
+      if (!title || !content) return;
+      const author = document.getElementById('npAuthor').value.trim() || 'Usuario Anonimo';
+      const category = document.getElementById('npCategory').value;
+      const avatar = author.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+      forumPosts.unshift({ id: Date.now(), author, avatar, title, content, category, time: 'Justo ahora', likes: 0, comments: [] });
+      document.getElementById('npTitle').value = '';
+      document.getElementById('npContent').value = '';
+      document.getElementById('npAuthor').value = '';
+      toggleNewPost();
+      renderForum();
+    }
+
+    // ===== CONTACT FORM =====
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('contactName').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const subject = document.getElementById('contactSubject').value.trim();
+      const message = document.getElementById('contactMessage').value.trim();
+      let valid = true;
+
+      ['Name','Email','Subject','Message'].forEach(f => { document.getElementById('error'+f).style.display = 'none'; document.getElementById('contact'+f).classList.remove('input-error'); });
+
+      if (!name) { showError('Name', 'El nombre es requerido'); valid = false; }
+      if (!email) { showError('Email', 'El correo es requerido'); valid = false; }
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showError('Email', 'Correo electronico invalido'); valid = false; }
+      if (!subject) { showError('Subject', 'El asunto es requerido'); valid = false; }
+      if (!message) { showError('Message', 'El mensaje es requerido'); valid = false; }
+
+      if (!valid) return;
+
+      document.getElementById('contactFormWrap').innerHTML = `
+        <div class="success-message">
+          <svg class="icon-xl" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <h3>Mensaje Enviado</h3>
+          <p>Gracias por contactarnos. Hemos recibido tu mensaje y te responderemos en un plazo de 24-48 horas.</p>
+        </div>
+      `;
+    }
+    function showError(field, msg) {
+      document.getElementById('error' + field).textContent = msg;
+      document.getElementById('error' + field).style.display = 'block';
+      document.getElementById('contact' + field).classList.add('input-error');
+    }
+
+    // Initialize
+    renderGallery();
+    renderForum();
+  </script>
+</body>
+</html>
